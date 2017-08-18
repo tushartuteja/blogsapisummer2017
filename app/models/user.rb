@@ -14,10 +14,12 @@ class User < ActiveRecord::Base
 	end
 
 	def as_json options = nil
-		return {
-			phone_number: self.phone_number,
-			blog_count: self.blogs.length
-		}
+		# return {
+		# 	phone_number: self.phone_number,
+		# 	blog_count: self.blogs.length
+		# }
+
+		UserSerializer.new(self).as_json
 	end
 
 
