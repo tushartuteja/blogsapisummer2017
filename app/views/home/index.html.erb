@@ -1,0 +1,59 @@
+<form id="blogCreate">
+
+<input type="text" name="title" id="title">
+<input type="text" name="content" id="content">
+<input type="submit" name="submit">
+</form>
+
+<div id="blogs">
+Loading........
+</div>
+
+
+<script type="text/javascript">
+
+var blogs = $("#blogs");
+function addBlog(blog){
+	var elem = document.createElement('div');
+	elem.innerHTML = blog.title +"," +blog.content;
+
+	blogs.append(elem);
+}
+
+$.ajax({
+	url: '/blogs/index',
+	success: function(data){
+		blogs.html("");
+		console.log(data);
+		data.blogs.forEach(function(blog){
+			addBlog(blog);
+		});
+	}
+});
+
+	var form = $('#blogCreate');
+	form.submit(function(event){
+		event.preventDefault();
+		console.log(event);
+		var title = $('#title').val();
+		var content = $('#content').val();
+		console.log(title, content);
+
+		$.ajax({
+			method: 'POST',
+			data: {
+				title: title, 
+				content: content,
+			},
+			url: '/blogs/create',
+			success: function(data){
+				console.log(data);
+				addBlog(data);
+			}
+		});
+
+
+
+
+	});
+</script>
